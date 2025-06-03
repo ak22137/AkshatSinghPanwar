@@ -1,8 +1,8 @@
-// Parallax Effect
+// Parallax Effect for Landscape
 document.addEventListener('DOMContentLoaded', function() {
     const parallaxLayers = document.querySelectorAll('.parallax-layer');
     
-    // Scroll-based parallax effect only
+    // Scroll-based parallax effect for landscape layers
     window.addEventListener('scroll', function() {
         const scrolled = window.pageYOffset;
         
@@ -13,11 +13,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Enhanced particle trail on mouse move (more dense)
-    function createParticle(x, y) {
+    // Enhanced particle trail with glowing effects
+    function createGlowParticle(x, y) {
         const particle = document.createElement('div');
-        const size = Math.random() * 6 + 2; // Random size between 2-8px
-        const colors = ['rgba(255, 255, 255, 0.8)', 'rgba(174, 213, 255, 0.8)', 'rgba(255, 234, 167, 0.8)'];
+        const size = Math.random() * 8 + 4; // Random size between 4-12px
+        const colors = [
+            'rgba(255, 255, 255, 0.9)', 
+            'rgba(174, 213, 255, 0.8)', 
+            'rgba(255, 234, 167, 0.8)',
+            'rgba(116, 185, 255, 0.7)',
+            'rgba(162, 155, 254, 0.7)'
+        ];
         const color = colors[Math.floor(Math.random() * colors.length)];
         
         particle.style.position = 'fixed';
@@ -29,14 +35,15 @@ document.addEventListener('DOMContentLoaded', function() {
         particle.style.borderRadius = '50%';
         particle.style.pointerEvents = 'none';
         particle.style.zIndex = '999';
-        particle.style.transition = 'all 1.5s ease-out';
+        particle.style.transition = 'all 2s ease-out';
+        particle.style.boxShadow = `0 0 ${size * 2}px ${color}`;
         
         document.body.appendChild(particle);
         
         // Animate particle
         setTimeout(() => {
             particle.style.opacity = '0';
-            particle.style.transform = `scale(0) translateY(-${Math.random() * 50 + 20}px)`;
+            particle.style.transform = `scale(0) translateY(-${Math.random() * 100 + 50}px) rotate(${Math.random() * 360}deg)`;
         }, 10);
         
         // Remove particle
@@ -44,21 +51,24 @@ document.addEventListener('DOMContentLoaded', function() {
             if (document.body.contains(particle)) {
                 document.body.removeChild(particle);
             }
-        }, 1500);
+        }, 2000);
     }
     
-    // More dense particle trail
+    // Glowing particle trail on mouse move
     document.addEventListener('mousemove', function(e) {
-        // Increase particle creation rate to 30%
-        if (Math.random() < 0.3) {
-            createParticle(e.clientX, e.clientY);
+        // Create glowing particles at 25% chance
+        if (Math.random() < 0.25) {
+            createGlowParticle(e.clientX, e.clientY);
         }
         
-        // Create additional particles for a trail effect
-        if (Math.random() < 0.2) {
+        // Create additional trailing particles
+        if (Math.random() < 0.15) {
             setTimeout(() => {
-                createParticle(e.clientX + (Math.random() - 0.5) * 20, e.clientY + (Math.random() - 0.5) * 20);
-            }, 50);
+                createGlowParticle(
+                    e.clientX + (Math.random() - 0.5) * 30, 
+                    e.clientY + (Math.random() - 0.5) * 30
+                );
+            }, 80);
         }
     });
     
@@ -160,7 +170,8 @@ document.addEventListener('DOMContentLoaded', function() {
         item.style.transition = `all 0.5s ease ${index * 0.1}s`;
         observer.observe(item);
     });
-      // Add scroll-triggered animations for contact items
+    
+    // Add scroll-triggered animations for contact items
     const contactItems = document.querySelectorAll('.contact-item');
     contactItems.forEach((item, index) => {
         item.style.opacity = '0';
@@ -168,6 +179,47 @@ document.addEventListener('DOMContentLoaded', function() {
         item.style.transition = `all 0.5s ease ${index * 0.2}s`;
         observer.observe(item);
     });
+    
+    // Add particle effect on mouse move
+    let particles = [];
+    const maxParticles = 20;
+    
+    function createParticle(x, y) {
+        const particle = document.createElement('div');
+        particle.style.position = 'fixed';
+        particle.style.left = x + 'px';
+        particle.style.top = y + 'px';
+        particle.style.width = '4px';
+        particle.style.height = '4px';
+        particle.style.background = 'rgba(255, 255, 255, 0.6)';
+        particle.style.borderRadius = '50%';
+        particle.style.pointerEvents = 'none';
+        particle.style.zIndex = '999';
+        particle.style.transition = 'all 1s ease-out';
+        
+        document.body.appendChild(particle);
+        
+        // Animate particle
+        setTimeout(() => {
+            particle.style.opacity = '0';
+            particle.style.transform = 'scale(0)';
+        }, 10);
+        
+        // Remove particle
+        setTimeout(() => {
+            document.body.removeChild(particle);
+        }, 1000);
+    }
+    
+    // Add particles on mouse move in hero section
+    const heroSection = document.querySelector('.parallax-container');
+    if (heroSection) {
+        heroSection.addEventListener('mousemove', function(e) {
+            if (Math.random() < 0.1) { // 10% chance to create particle
+                createParticle(e.clientX, e.clientY);
+            }
+        });
+    }
 });
 
 // Add mobile menu styles
