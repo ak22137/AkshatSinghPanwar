@@ -6,141 +6,324 @@
     <title>Akshat Singh Panwar - Portfolio</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <h2>Akshat Singh Panwar</h2>
+                <a href="#home">ASP</a>
             </div>
-            <div class="nav-menu">
-                <a href="#home" class="nav-link">Home</a>
-                <a href="#about" class="nav-link">About</a>
-                <a href="#portfolio" class="nav-link">Portfolio</a>
-                <a href="#contact" class="nav-link">Contact</a>
-            </div>
+            <ul class="nav-menu">                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#ai-projects" class="nav-link">AI/ML</a></li>
+                <li><a href="#game-projects" class="nav-link">Games</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
             <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
             </div>
         </div>
-    </nav>    <!-- Parallax Landing Section -->
-    <section id="home" class="parallax-container">
-        <!-- Sky Layer (furthest back) -->
-        <div class="parallax-layer sky-layer" data-speed="0.1">
-            <div class="sky-gradient"></div>
-            <div class="stars"></div>
-            <div class="moon"></div>
-            <div class="clouds">
-                <div class="cloud cloud-1"></div>
-                <div class="cloud cloud-2"></div>
-                <div class="cloud cloud-3"></div>
-            </div>
-        </div>
+    </nav>
 
-        <!-- Far Mountains Layer -->
-        <div class="parallax-layer mountain-far" data-speed="0.2">
-            <div class="mountain mountain-1"></div>
-            <div class="mountain mountain-2"></div>
-        </div>
+    <!-- Particle Canvas -->
+    <canvas id="particles-canvas"></canvas>
 
-        <!-- Mid Mountains Layer -->
-        <div class="parallax-layer mountain-mid" data-speed="0.4">
-            <div class="mountain mountain-3"></div>
-            <div class="mountain mountain-4"></div>
-        </div>
-
-        <!-- Close Mountains Layer -->
-        <div class="parallax-layer mountain-close" data-speed="0.6">
-            <div class="mountain mountain-5"></div>
-            <div class="mountain mountain-6"></div>
-        </div>
-
-        <!-- Trees Layer -->
-        <div class="parallax-layer trees-layer" data-speed="0.8">
-            <div class="tree tree-1"></div>
-            <div class="tree tree-2"></div>
-            <div class="tree tree-3"></div>
-            <div class="tree tree-4"></div>
-            <div class="tree tree-5"></div>
-        </div>
-
-        <!-- Foreground Layer -->
-        <div class="parallax-layer foreground-layer" data-speed="1.0">
-            <div class="grass"></div>
-            <div class="rocks">
-                <div class="rock rock-1"></div>
-                <div class="rock rock-2"></div>
-            </div>
-        </div>
-        
-        <!-- Main content -->
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="parallax-bg"></div>
         <div class="hero-content">
-            <h1 class="hero-title">
-                <span class="typing-text">Hello, I'm Akshat</span>
-            </h1>
-            <p class="hero-subtitle">Creative Developer & Designer</p>
-            <div class="hero-buttons">
-                <a href="#portfolio" class="btn btn-primary">View My Work</a>
-                <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+            <div class="hero-text">                <h1 class="hero-title">
+                    <span class="greeting">Hello, I'm</span>
+                    <span class="name">Akshat Singh Panwar</span>
+                </h1>
+                <p class="hero-subtitle">AI/ML Engineer & Game Developer</p>
+                <div class="hero-specialties">
+                    <div class="specialty ai-ml">
+                        <i class="fas fa-brain"></i>
+                        <span>Artificial Intelligence</span>
+                    </div>
+                    <div class="specialty game-dev">
+                        <i class="fas fa-gamepad"></i>
+                        <span>Game Development</span>
+                    </div>
+                </div>
+                <div class="hero-buttons">
+                    <a href="#ai-projects" class="btn btn-primary ai-theme">AI/ML Projects</a>
+                    <a href="#game-projects" class="btn btn-secondary game-theme">Game Projects</a>
+                    <a href="#contact" class="btn btn-tertiary">Get In Touch</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="profile-card">
+                    <div class="profile-img">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <!-- Floating particles -->
-        <div class="floating-particles">
-            <div class="particle particle-1"></div>
-            <div class="particle particle-2"></div>
-            <div class="particle particle-3"></div>
-            <div class="particle particle-4"></div>
-            <div class="particle particle-5"></div>
-            <div class="particle particle-6"></div>
+        <div class="scroll-indicator">
+            <div class="scroll-arrow">
+                <i class="fas fa-chevron-down"></i>
+            </div>
         </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="section">
+    <section id="about" class="about">
         <div class="container">
-            <h2 class="section-title">About Me</h2>
-            <div class="about-content">
+            <div class="section-header">
+                <h2 class="section-title">About Me</h2>
+                <div class="section-subtitle">Get to know me better</div>
+            </div>            <div class="about-content">
                 <div class="about-text">
-                    <p>I'm a passionate developer and designer who loves creating beautiful and functional digital experiences. With a keen eye for detail and a love for clean code, I bring ideas to life through innovative web solutions.</p>
-                    <div class="skills">
-                        <div class="skill-item">Frontend Development</div>
-                        <div class="skill-item">UI/UX Design</div>
-                        <div class="skill-item">Backend Development</div>
-                        <div class="skill-item">Mobile Development</div>
+                    <p>I'm a passionate technologist at the intersection of artificial intelligence and interactive entertainment. With expertise in machine learning algorithms and game development frameworks, I create intelligent systems and immersive gaming experiences that push the boundaries of what's possible.</p>
+                    <div class="expertise-areas">
+                        <div class="expertise ai-expertise">
+                            <h4><i class="fas fa-robot"></i> AI/ML Expertise</h4>
+                            <ul>
+                                <li>Deep Learning & Neural Networks</li>
+                                <li>Computer Vision & NLP</li>
+                                <li>Reinforcement Learning</li>
+                                <li>MLOps & Model Deployment</li>
+                            </ul>
+                        </div>
+                        <div class="expertise game-expertise">
+                            <h4><i class="fas fa-gamepad"></i> Game Development</h4>
+                            <ul>
+                                <li>Unity & Unreal Engine</li>
+                                <li>Procedural Generation</li>
+                                <li>AI-Driven Game Mechanics</li>
+                                <li>Cross-Platform Development</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="stats">
+                        <div class="stat">
+                            <h3>25+</h3>
+                            <p>AI Models Deployed</p>
+                        </div>
+                        <div class="stat">
+                            <h3>15+</h3>
+                            <p>Games Published</p>
+                        </div>
+                        <div class="stat">
+                            <h3>3+</h3>
+                            <p>Years Experience</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <div class="about-img-container">
+                        <div class="dual-icon">
+                            <i class="fas fa-brain ai-icon"></i>
+                            <i class="fas fa-gamepad game-icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Skills & Technologies</h2>
+                <div class="section-subtitle">My technical arsenal</div>
+            </div>
+            <div class="skills-container">
+                <!-- AI/ML Skills -->
+                <div class="skills-category ai-category">
+                    <h3 class="category-title"><i class="fas fa-brain"></i> AI/ML Technologies</h3>
+                    <div class="skills-grid">
+                        <div class="skill-card ai-card">
+                            <i class="fab fa-python"></i>
+                            <h4>Python & Libraries</h4>
+                            <p>TensorFlow, PyTorch, Scikit-learn, Pandas, NumPy</p>
+                        </div>
+                        <div class="skill-card ai-card">
+                            <i class="fas fa-eye"></i>
+                            <h4>Computer Vision</h4>
+                            <p>OpenCV, YOLO, CNN, Image Processing, Object Detection</p>
+                        </div>
+                        <div class="skill-card ai-card">
+                            <i class="fas fa-comments"></i>
+                            <h4>Natural Language Processing</h4>
+                            <p>BERT, GPT, Transformers, NLTK, spaCy</p>
+                        </div>
+                        <div class="skill-card ai-card">
+                            <i class="fas fa-chart-line"></i>
+                            <h4>Machine Learning</h4>
+                            <p>Deep Learning, Reinforcement Learning, MLOps</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Game Development Skills -->
+                <div class="skills-category game-category">
+                    <h3 class="category-title"><i class="fas fa-gamepad"></i> Game Development</h3>
+                    <div class="skills-grid">
+                        <div class="skill-card game-card">
+                            <i class="fab fa-unity"></i>
+                            <h4>Unity Engine</h4>
+                            <p>C#, Unity 3D/2D, Animation, Physics, Networking</p>
+                        </div>
+                        <div class="skill-card game-card">
+                            <i class="fas fa-cube"></i>
+                            <h4>Unreal Engine</h4>
+                            <p>Blueprint, C++, Level Design, Materials, Lighting</p>
+                        </div>
+                        <div class="skill-card game-card">
+                            <i class="fas fa-mobile-alt"></i>
+                            <h4>Mobile Game Dev</h4>
+                            <p>Android, iOS, Cross-platform, Performance Optimization</p>
+                        </div>
+                        <div class="skill-card game-card">
+                            <i class="fas fa-dice"></i>
+                            <h4>Game Design</h4>
+                            <p>Procedural Generation, AI Behavior, Game Mechanics</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Portfolio Section -->
-    <section id="portfolio" class="section bg-dark">
+    <!-- AI/ML Projects Section -->
+    <section id="ai-projects" class="ai-projects">
         <div class="container">
-            <h2 class="section-title text-white">My Portfolio</h2>
-            <div class="portfolio-grid">
-                <div class="portfolio-item">
-                    <div class="portfolio-content">
-                        <h3>Project 1</h3>
-                        <p>Description of your first project</p>
-                        <a href="#" class="btn btn-primary">View Project</a>
+            <div class="section-header">
+                <h2 class="section-title ai-title">AI/ML Projects</h2>
+                <div class="section-subtitle">Intelligent solutions powered by machine learning</div>
+            </div>
+            <div class="projects-grid ai-projects-grid">
+                <div class="project-card ai-project-card">
+                    <div class="project-image ai-project-image">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>Neural Style Transfer</h3>
+                        <p>Deep learning model that transforms images using artistic styles, implementing CNN architecture with TensorFlow.</p>
+                        <div class="project-tech">
+                            <span>TensorFlow</span>
+                            <span>Python</span>
+                            <span>CNN</span>
+                            <span>Computer Vision</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link"><i class="fab fa-github"></i></a>
+                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
                     </div>
                 </div>
-                <div class="portfolio-item">
-                    <div class="portfolio-content">
-                        <h3>Project 2</h3>
-                        <p>Description of your second project</p>
-                        <a href="#" class="btn btn-primary">View Project</a>
+                <div class="project-card ai-project-card">
+                    <div class="project-image ai-project-image">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>Chatbot with NLP</h3>
+                        <p>Intelligent conversational AI using transformer models and natural language understanding.</p>
+                        <div class="project-tech">
+                            <span>BERT</span>
+                            <span>Transformers</span>
+                            <span>PyTorch</span>
+                            <span>NLP</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link"><i class="fab fa-github"></i></a>
+                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
                     </div>
                 </div>
-                <div class="portfolio-item">
-                    <div class="portfolio-content">
-                        <h3>Project 3</h3>
-                        <p>Description of your third project</p>
-                        <a href="#" class="btn btn-primary">View Project</a>
+                <div class="project-card ai-project-card">
+                    <div class="project-image ai-project-image">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>Object Detection System</h3>
+                        <p>Real-time object detection and tracking system using YOLO and OpenCV for surveillance applications.</p>
+                        <div class="project-tech">
+                            <span>YOLO</span>
+                            <span>OpenCV</span>
+                            <span>Python</span>
+                            <span>Real-time</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link"><i class="fab fa-github"></i></a>
+                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game Projects Section -->
+    <section id="game-projects" class="game-projects">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title game-title">Game Development Projects</h2>
+                <div class="section-subtitle">Immersive gaming experiences and interactive entertainment</div>
+            </div>
+            <div class="projects-grid game-projects-grid">
+                <div class="project-card game-project-card">
+                    <div class="project-image game-project-image">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>Space Explorer VR</h3>
+                        <p>Immersive VR space exploration game with procedural planet generation and realistic physics simulation.</p>
+                        <div class="project-tech">
+                            <span>Unity 3D</span>
+                            <span>C#</span>
+                            <span>VR</span>
+                            <span>Procedural</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link"><i class="fab fa-github"></i></a>
+                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card game-project-card">
+                    <div class="project-image game-project-image">
+                        <i class="fas fa-dragon"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>AI-Powered RPG</h3>
+                        <p>Fantasy RPG with intelligent NPCs powered by machine learning for dynamic storytelling and adaptive gameplay.</p>
+                        <div class="project-tech">
+                            <span>Unreal Engine</span>
+                            <span>C++</span>
+                            <span>AI Behavior</span>
+                            <span>RPG</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link"><i class="fab fa-github"></i></a>
+                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card game-project-card">
+                    <div class="project-image game-project-image">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>Puzzle Quest Mobile</h3>
+                        <p>Cross-platform mobile puzzle game with machine learning-based difficulty adjustment and player behavior analysis.</p>
+                        <div class="project-tech">
+                            <span>Unity</span>
+                            <span>Mobile</span>
+                            <span>ML Analytics</span>
+                            <span>Cross-platform</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link"><i class="fab fa-github"></i></a>
+                            <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -148,25 +331,48 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="section">
+    <section id="contact" class="contact">
         <div class="container">
-            <h2 class="section-title">Get In Touch</h2>
+            <div class="section-header">
+                <h2 class="section-title">Get In Touch</h2>
+                <div class="section-subtitle">Let's work together</div>
+            </div>
             <div class="contact-content">
-                <p>Let's work together on your next project!</p>
                 <div class="contact-info">
                     <div class="contact-item">
-                        <h4>Email</h4>
-                        <p>your.email@example.com</p>
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h3>Email</h3>
+                            <p>akshat@example.com</p>
+                        </div>
                     </div>
                     <div class="contact-item">
-                        <h4>Phone</h4>
-                        <p>+1 (555) 123-4567</p>
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h3>Phone</h3>
+                            <p>+91 12345 67890</p>
+                        </div>
                     </div>
                     <div class="contact-item">
-                        <h4>Location</h4>
-                        <p>Your City, Country</p>
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h3>Location</h3>
+                            <p>India</p>
+                        </div>
                     </div>
                 </div>
+                <form class="contact-form">
+                    <div class="form-group">
+                        <input type="text" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Your Message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
             </div>
         </div>
     </section>
@@ -174,7 +380,17 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 Akshat Singh Panwar. All rights reserved.</p>
+            <div class="footer-content">
+                <div class="footer-text">
+                    <p>&copy; 2025 Akshat Singh Panwar. All rights reserved.</p>
+                </div>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
         </div>
     </footer>
 
