@@ -353,9 +353,10 @@ html {
 .grass {
     position: absolute;
     bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 120px;
+    left: 50%;
+    width: 100vw;
+    height: 100px;
+    transform: translateX(-50%);
     background: linear-gradient(180deg, 
         #27ae60 0%, 
         #229954 40%, 
@@ -382,8 +383,10 @@ html {
 .rocks {
     position: absolute;
     bottom: 80px;
-    width: 100%;
+    left: 50%;
+    width: 300vw;
     height: 40px;
+    transform: translateX(-50%);
 }
 
 .rock {
@@ -496,6 +499,19 @@ html {
     opacity: 0;
     animation: slideUp 1s ease 1s forwards;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(90deg, #00c3ff, #ffff1c, #00ffb0, #00c3ff);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    animation: aiTextGlow 4s linear infinite, slideUp 1s ease 1s forwards;
+}
+
+@keyframes aiTextGlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .hero-buttons {
@@ -507,44 +523,61 @@ html {
     animation: slideUp 1s ease 1.5s forwards;
 }
 
-/* Floating shapes removed - replaced with landscape elements */
-
-/* Buttons */
-.btn {
-    display: inline-block;
-    padding: 12px 30px;
-    text-decoration: none;
-    border-radius: 50px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
+/* --- AI/ML Neural Overlay --- */
+.ai-ml-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200vw;
+    height: 120px;
+    pointer-events: none;
+    z-index: 8;
+    background: repeating-linear-gradient(120deg, rgba(52, 152, 219, 0.08) 0 2px, transparent 2px 40px),
+                repeating-linear-gradient(60deg, rgba(46, 204, 113, 0.08) 0 2px, transparent 2px 40px);
+    /* Simulate circuit/neural lines */
+    mask-image: linear-gradient(to top, black 80%, transparent 100%);
+    animation: aiCircuitMove 12s linear infinite;
 }
 
-.btn-primary {
-    background: #3498db;
-    color: white;
-    border-color: #3498db;
+@keyframes aiCircuitMove {
+    0% { background-position: 0 0, 0 0; }
+    100% { background-position: 200px 0, -200px 0; }
 }
 
-.btn-primary:hover {
-    background: transparent;
-    color: #3498db;
-    border-color: #3498db;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
+/* --- AI/ML Neural Network Overlay --- */
+.ai-ml-network {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 9;
 }
 
-.btn-secondary {
-    background: transparent;
-    color: white;
-    border-color: white;
+.ai-ml-node {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(circle, #00c3ff 60%, #fff 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 12px #00c3ff88, 0 0 2px #fff;
+    animation: nodePulse 2.5s infinite alternate;
 }
 
-.btn-secondary:hover {
-    background: white;
-    color: #333;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.3);
+@keyframes nodePulse {
+    0% { box-shadow: 0 0 8px #00c3ff88, 0 0 2px #fff; }
+    100% { box-shadow: 0 0 24px #00ffb088, 0 0 8px #fff; }
+}
+
+.ai-ml-connection {
+    position: absolute;
+    height: 2px;
+    background: linear-gradient(90deg, #00c3ff 0%, #00ffb0 100%);
+    opacity: 0.5;
+    border-radius: 2px;
+    z-index: 8;
 }
 
 /* Sections */
