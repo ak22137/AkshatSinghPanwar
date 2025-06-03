@@ -1,4 +1,346 @@
-// Particle System
+// Enhanced Cursor Trail System
+class CursorTrail {
+    constructor() {
+        this.trails = [];
+        this.mouse = { x: 0, y: 0 };
+        this.currentSection = 'home';
+        this.trailStyle = 'ai'; // 'ai' or 'game'
+        this.canvas = this.createTrailCanvas();
+        this.ctx = this.canvas.getContext('2d');
+        
+        this.bindEvents();
+        this.animate();
+    }
+
+    createTrailCanvas() {
+        const canvas = document.createElement('canvas');
+        canvas.id = 'cursor-trail-canvas';
+        canvas.style.position = 'fixed';
+        canvas.style.top = '0';
+        canvas.style.left = '0';
+        canvas.style.width = '100%';
+        canvas.style.height = '100%';
+        canvas.style.pointerEvents = 'none';
+        canvas.style.zIndex = '999';
+        document.body.appendChild(canvas);
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        return canvas;
+    }
+
+    bindEvents() {
+        window.addEventListener('mousemove', (e) => {
+            this.mouse.x = e.clientX;
+            this.mouse.y = e.clientY;
+            this.addTrailPoint(e.clientX, e.clientY);
+        });
+
+        window.addEventListener('resize', () => {
+            this.canvas.width = window.innerWidth;
+            this.canvas.height = window.innerHeight;
+        });
+
+        // Detect section changes
+        window.addEventListener('scroll', () => {
+            this.updateCurrentSection();
+        });
+    }
+
+    updateCurrentSection() {
+        const sections = ['home', 'about', 'skills', 'ai-projects', 'game-projects', 'contact'];
+        const scrollPosition = window.scrollY + window.innerHeight / 2;
+        
+        for (const section of sections) {
+            const element = document.getElementById(section);
+            if (element) {
+                const rect = element.getBoundingClientRect();
+                const elementTop = rect.top + window.scrollY;
+                const elementBottom = elementTop + rect.height;
+                
+                if (scrollPosition >= elementTop && scrollPosition <= elementBottom) {
+                    if (section !== this.currentSection) {
+                        this.currentSection = section;
+                        this.updateTrailStyle();
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    updateTrailStyle() {
+        if (this.currentSection === 'ai-projects' || this.currentSection === 'skills') {
+            this.trailStyle = 'ai';
+        } else if (this.currentSection === 'game-projects') {
+            this.trailStyle = 'game';
+        } else {
+            this.trailStyle = 'default';
+        }
+    }
+
+    addTrailPoint(x, y) {
+        this.trails.push({
+            x: x,
+            y: y,
+            life: 1,
+            size: Math.random() * 8 + 4,
+            vx: (Math.random() - 0.5) * 2,
+            vy: (Math.random() - 0.5) * 2
+        });
+
+        if (this.trails.length > 50) {
+            this.trails.shift();
+        }
+    }
+
+    animate() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        for (let i = this.trails.length - 1; i >= 0; i--) {
+            const trail = this.trails[i];
+            trail.life -= 0.02;
+            trail.x += trail.vx * 0.5;
+            trail.y += trail.vy * 0.5;
+            trail.size *= 0.98;
+            
+            if (trail.life <= 0) {
+                this.trails.splice(i, 1);
+                continue;
+            }
+            
+            this.ctx.save();
+            this.ctx.globalAlpha = trail.life;
+            
+            if (this.trailStyle === 'ai') {
+                // AI Trail - Circuit-like patterns
+                this.ctx.strokeStyle = `rgba(0, 212, 255, ${trail.life})`;
+                this.ctx.fillStyle = `rgba(0, 212, 255, ${trail.life * 0.3})`;
+                this.ctx.lineWidth = 2;
+                
+                this.ctx.beginPath();
+                this.ctx.arc(trail.x, trail.y, trail.size, 0, Math.PI * 2);
+                this.ctx.fill();
+                this.ctx.stroke();
+                
+                // Add connecting lines
+                if (i < this.trails.length - 1) {
+                    const nextTrail = this.trails[i + 1];
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(trail.x, trail.y);
+                    this.ctx.lineTo(nextTrail.x, nextTrail.y);
+                    this.ctx.stroke();
+                }
+            } else if (this.trailStyle === 'game') {
+                // Game Trail - Flame-like effects
+                this.ctx.fillStyle = `rgba(255, 107, 107, ${trail.life})`;
+                
+                this.ctx.beginPath();
+                this.ctx.arc(trail.x, trail.y, trail.size, 0, Math.PI * 2);
+                this.ctx.fill();
+                
+                // Add flame particles
+                for (let j = 0; j < 3; j++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = Math.random() * trail.size * 2;
+                    const px = trail.x + Math.cos(angle) * distance;
+                    const py = trail.y + Math.sin(angle) * distance;
+                    
+                    this.ctx.fillStyle = `rgba(255, ${69 + Math.random() * 100}, 69, ${trail.life * 0.5})`;
+                    this.ctx.beginPath();
+                    this.ctx.arc(px, py, Math.random() * 3 + 1, 0, Math.PI * 2);
+                    this.ctx.fill();
+                }
+            } else {
+                // Default Trail - Simple gradient
+                const gradient = this.ctx.createRadialGradient(trail.x, trail.y, 0, trail.x, trail.y, trail.size);
+                gradient.addColorStop(0, `rgba(255, 255, 255, ${trail.life})`);
+                gradient.addColorStop(1, `rgba(255, 255, 255, 0)`);
+                
+                this.ctx.fillStyle = gradient;
+                this.ctx.beginPath();
+                this.ctx.arc(trail.x, trail.y, trail.size, 0, Math.PI * 2);
+                this.ctx.fill();
+            }
+            
+            this.ctx.restore();
+        }
+        
+        requestAnimationFrame(() => this.animate());
+    }
+}
+
+// Enhanced Parallax Shapes System
+class ParallaxShapes {
+    constructor() {
+        this.canvas = this.createShapesCanvas();
+        this.ctx = this.canvas.getContext('2d');
+        this.shapes = [];
+        this.mouse = { x: 0, y: 0 };
+        this.scrollY = 0;
+        
+        this.init();
+        this.bindEvents();
+        this.animate();
+    }
+
+    createShapesCanvas() {
+        const canvas = document.createElement('canvas');
+        canvas.id = 'parallax-shapes-canvas';
+        canvas.style.position = 'fixed';
+        canvas.style.top = '0';
+        canvas.style.left = '0';
+        canvas.style.width = '100%';
+        canvas.style.height = '100%';
+        canvas.style.pointerEvents = 'none';
+        canvas.style.zIndex = '1';
+        document.body.appendChild(canvas);
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        return canvas;
+    }
+
+    init() {
+        this.createShapes();
+    }    createShapes() {
+        this.shapes = [];
+        const shapeCount = 15;
+        
+        for (let i = 0; i < shapeCount; i++) {
+            this.shapes.push({
+                x: Math.random() * this.canvas.width,
+                y: Math.random() * this.canvas.height,
+                size: Math.random() * 80 + 40,
+                rotation: Math.random() * Math.PI * 2,
+                rotationSpeed: (Math.random() - 0.5) * 0.005, // Slower rotation
+                opacity: Math.random() * 0.08 + 0.03, // Lower opacity
+                type: Math.floor(Math.random() * 4), // 0: circle, 1: triangle, 2: square, 3: hexagon
+                parallaxFactor: Math.random() * 0.15 + 0.05, // More free movement
+                color: this.getRandomColor(),
+                pulsePhase: Math.random() * Math.PI * 2,
+                pulseSpeed: Math.random() * 0.008 + 0.003, // Much slower pulsing
+                driftX: (Math.random() - 0.5) * 0.2, // Free floating
+                driftY: (Math.random() - 0.5) * 0.2
+            });
+        }
+    }
+
+    getRandomColor() {
+        const colors = [
+            'rgba(0, 212, 255, ',
+            'rgba(255, 107, 107, ',
+            'rgba(147, 51, 234, ',
+            'rgba(34, 197, 94, ',
+            'rgba(251, 191, 36, '
+        ];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    bindEvents() {
+        window.addEventListener('mousemove', (e) => {
+            this.mouse.x = e.clientX;
+            this.mouse.y = e.clientY;
+        });
+
+        window.addEventListener('scroll', () => {
+            this.scrollY = window.scrollY;
+        });
+
+        window.addEventListener('resize', () => {
+            this.canvas.width = window.innerWidth;
+            this.canvas.height = window.innerHeight;
+            this.createShapes();
+        });
+    }    drawShape(shape) {
+        this.ctx.save();
+        
+        // Calculate cursor influence (reduced intensity)
+        const distance = Math.sqrt(
+            Math.pow(this.mouse.x - shape.x, 2) + 
+            Math.pow(this.mouse.y - shape.y, 2)
+        );
+        const influence = Math.max(0, 250 - distance) / 250; // Larger radius, gentler influence
+        
+        // Apply parallax effect based on cursor position and scroll
+        const parallaxX = (this.mouse.x - this.canvas.width / 2) * shape.parallaxFactor;
+        const parallaxY = (this.mouse.y - this.canvas.height / 2) * shape.parallaxFactor;
+        const scrollParallax = this.scrollY * shape.parallaxFactor * 0.3;
+        
+        // Add free floating movement
+        shape.x += shape.driftX;
+        shape.y += shape.driftY;
+        
+        // Wrap around edges for continuous movement
+        if (shape.x < -100) shape.x = this.canvas.width + 100;
+        if (shape.x > this.canvas.width + 100) shape.x = -100;
+        if (shape.y < -100) shape.y = this.canvas.height + 100;
+        if (shape.y > this.canvas.height + 100) shape.y = -100;
+        
+        const x = shape.x + parallaxX + influence * 10; // Reduced cursor influence
+        const y = shape.y + parallaxY + scrollParallax + influence * 10;
+        
+        // Gentler pulsing effect
+        const pulseSize = shape.size + Math.sin(Date.now() * shape.pulseSpeed + shape.pulsePhase) * 5; // Reduced pulse amplitude
+        const size = pulseSize + influence * 15; // Reduced cursor size influence
+        
+        this.ctx.translate(x, y);
+        this.ctx.rotate(shape.rotation);
+        
+        const opacity = shape.opacity + influence * 0.1; // Reduced opacity influence
+        this.ctx.fillStyle = shape.color + opacity + ')';
+        this.ctx.strokeStyle = shape.color + (opacity * 1.5) + ')';
+        this.ctx.lineWidth = 1;
+        
+        this.ctx.beginPath();
+        
+        switch (shape.type) {
+            case 0: // Circle
+                this.ctx.arc(0, 0, size / 2, 0, Math.PI * 2);
+                break;
+            case 1: // Triangle
+                this.ctx.moveTo(0, -size / 2);
+                this.ctx.lineTo(-size / 2, size / 2);
+                this.ctx.lineTo(size / 2, size / 2);
+                this.ctx.closePath();
+                break;
+            case 2: // Square
+                this.ctx.rect(-size / 2, -size / 2, size, size);
+                break;
+            case 3: // Hexagon
+                for (let i = 0; i < 6; i++) {
+                    const angle = (i * Math.PI) / 3;
+                    const px = Math.cos(angle) * size / 2;
+                    const py = Math.sin(angle) * size / 2;
+                    if (i === 0) this.ctx.moveTo(px, py);
+                    else this.ctx.lineTo(px, py);
+                }
+                this.ctx.closePath();
+                break;
+        }
+        
+        this.ctx.fill();
+        this.ctx.stroke();
+        this.ctx.restore();
+        
+        // Update rotation (slower)
+        shape.rotation += shape.rotationSpeed + influence * 0.01;
+    }
+
+    animate() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        for (const shape of this.shapes) {
+            this.drawShape(shape);
+        }
+        
+        requestAnimationFrame(() => this.animate());
+    }
+}
+
+// Enhanced Particle System
 class ParticleSystem {
     constructor() {
         this.canvas = document.getElementById('particles-canvas');
@@ -429,6 +771,148 @@ class TypingEffect {
     }
 }
 
+// Magnetic Cursor Effect for Interactive Elements
+class MagneticCursor {
+    constructor() {
+        this.magneticElements = document.querySelectorAll('.btn, .nav-link, .skill-card, .project-card');
+        this.cursor = document.createElement('div');
+        this.cursor.classList.add('custom-cursor');
+        document.body.appendChild(this.cursor);
+        
+        this.init();
+        this.bindEvents();
+    }
+
+    init() {
+        // Add custom cursor styles
+        const cursorStyles = `
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.8) 0%, rgba(0, 212, 255, 0.2) 100%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            mix-blend-mode: difference;
+        }
+        
+        .custom-cursor.magnetic {
+            transform: scale(2);
+            background: radial-gradient(circle, rgba(255, 107, 107, 0.8) 0%, rgba(255, 107, 107, 0.2) 100%);
+        }
+        `;
+        
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = cursorStyles;
+        document.head.appendChild(styleSheet);
+    }
+
+    bindEvents() {
+        document.addEventListener('mousemove', (e) => {
+            this.cursor.style.left = e.clientX - 10 + 'px';
+            this.cursor.style.top = e.clientY - 10 + 'px';
+        });
+
+        this.magneticElements.forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                this.cursor.classList.add('magnetic');
+            });
+
+            element.addEventListener('mouseleave', () => {
+                this.cursor.classList.remove('magnetic');
+                element.style.transform = '';
+            });
+
+            element.addEventListener('mousemove', (e) => {
+                const rect = element.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                element.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
+            });
+        });
+    }
+}
+
+// Enhanced Text Animation Effects
+class TextAnimations {
+    constructor() {
+        this.init();
+    }
+
+    init() {
+        this.animateCounters();
+        this.addGlitchEffect();
+    }
+
+    animateCounters() {
+        const counters = document.querySelectorAll('.stat-number');
+        
+        const observerOptions = {
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    this.countUp(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        counters.forEach(counter => observer.observe(counter));
+    }
+
+    countUp(element) {
+        const target = parseInt(element.getAttribute('data-target'));
+        const duration = 2000;
+        const step = target / (duration / 16);
+        let current = 0;
+
+        const timer = setInterval(() => {
+            current += step;
+            element.textContent = Math.floor(current);
+            
+            if (current >= target) {
+                element.textContent = target;
+                clearInterval(timer);
+            }
+        }, 16);
+    }
+
+    addGlitchEffect() {
+        const glitchElements = document.querySelectorAll('.hero-title, .section-title');
+        
+        glitchElements.forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                element.style.animation = 'glitch 0.5s ease-in-out';
+            });
+
+            element.addEventListener('animationend', () => {
+                element.style.animation = '';
+            });
+        });
+
+        // Add glitch keyframes
+        const glitchStyles = `
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+        `;
+        
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = glitchStyles;
+        document.head.appendChild(styleSheet);
+    }
+}
+
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize all controllers
@@ -436,7 +920,11 @@ document.addEventListener('DOMContentLoaded', () => {
     new ParallaxController();
     new NavigationController();
     new AnimationController();
-    new FormHandler();
+    new FormHandler();    // Initialize enhanced effects
+    new CursorTrail();
+    new ParallaxShapes();
+    new MagneticCursor();
+    new TextAnimations();
 
     // Add typing effect to subtitle
     const subtitle = document.querySelector('.hero-subtitle');
